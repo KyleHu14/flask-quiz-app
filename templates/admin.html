@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method = "POST">
+    {{ form.hidden_tag() }}
+    <div class = "mt-5">
+        {% for f in form %}
+            <p class = "text-center">
+                {% if f.id != "csrf_token" %}
+                    {% if f.id == "submit" %}
+                        {{f(size=32)}}
+                    {% else %}
+                        {{f.label}}
+                        {{f(size=32)}}
+                    {% endif %}
+                {% endif %}
+            </p>
+        {% endfor %}
+    </div>
+    
+</form>
+{% endblock%}

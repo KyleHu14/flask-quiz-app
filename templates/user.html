@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% if results %}
+    <p class = "text-center">
+        Congratulations!
+        <br>
+        Number Correct : {{results['num_correct']}}
+        <br>
+        Score : {{results['percent_score']}}
+    </p>
+{% else%}
+    <form method = "POST">
+        {% for q in questions %}
+            <p class = "text-center">
+                Question {{q.id}}: {{q.question_text}}
+                <br>
+                Your Answer
+                <br>
+                <input name = "answer{{q.id}}" id = "answer{{q.id}}" type = "text">
+            </p>
+        {% endfor %}
+        <div align = "center">
+            <button type = 'submit' class = 'btn btn-dark'>Submit Answers</button>
+        </div>
+    </form>
+{% endif %}
+{% endblock content %}
