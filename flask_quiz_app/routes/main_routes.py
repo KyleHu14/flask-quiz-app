@@ -10,8 +10,8 @@ main_routes = Blueprint('main_routes', __name__)
 def home():
     return render_template('home.html', navbar_title = 'Home')
 
-@main_routes.route('/admin', methods = ['GET', 'POST'])
-def admin():
+@main_routes.route('/question_manager', methods = ['GET', 'POST'])
+def question_manager():
 
     questions = Question.query.all()
 
@@ -24,17 +24,17 @@ def admin():
     
         form.question_text.data, form.answer_text.data = "", ""
 
-        return render_template('admin.html', 
-            title = 'Admin Page', 
+        return render_template('question_manager.html', 
+            title = 'Question manager', 
             form = form, 
-            navbar_title = 'Add Question', 
+            navbar_title = 'Question manager', 
             questions = Question.query.all()
         )
 
-    return render_template('admin.html', 
-        title = 'Admin Page', 
+    return render_template('question_manager.html', 
+        title = 'Question manager', 
         form = form, 
-        navbar_title = 'Add Question', 
+        navbar_title = 'Question manager', 
         questions = questions
     )
 

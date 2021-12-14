@@ -26,14 +26,30 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('main_routes.home')}}">Home Page</a>
             </li>
+            {% if current_user.is_authenticated  and (current_user.teacher or current_user.admin) %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('main_routes.question_manager')}}">Question Manager</a>
+              </li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('main_routes.user')}}">Answer Questions</a>
+              </li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+              </li>
 
-            <li class="nav-item">
-            <a class="nav-link" href="{{url_for('main_routes.admin')}}">Admin Page</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="{{url_for('main_routes.user')}}">User Page</a>
-            </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
+              </li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
