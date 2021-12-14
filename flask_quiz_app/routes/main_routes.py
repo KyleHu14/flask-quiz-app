@@ -8,21 +8,35 @@ main_routes = Blueprint('main_routes', __name__)
 
 @main_routes.route('/')
 def home():
-    return render_template('base.html', navbar_title = 'Home')
+    return render_template('home.html', navbar_title = 'Home')
 
 @main_routes.route('/admin', methods = ['GET', 'POST'])
 def admin():
+
+    questions = Question.query.all()
+
     form = QuestionForm()
     if form.validate_on_submit():
         new_question = Question(question_text = form.question_text.data, answer_text = form.answer_text.data)
 
         db.session.add(new_question)
         db.session.commit()
-        print('New Question Created')
     
         form.question_text.data, form.answer_text.data = "", ""
 
-    return render_template('admin.html', title = 'Admin Page', form = form, navbar_title = 'Add Question')
+        return render_template('admin.html', 
+            title = 'Admin Page', 
+            form = form, 
+            navbar_title = 'Add Question', 
+            questions = Question.query.all()
+        )
+
+    return render_template('admin.html', 
+        title = 'Admin Page', 
+        form = form, 
+        navbar_title = 'Add Question', 
+        questions = questions
+    )
 
 @main_routes.route('/user', methods = ['GET', 'POST'])
 def user():
@@ -39,3 +53,11 @@ def user():
             }
         return render_template('user.html', questions = all_questions, navbar_title = "Questions", results = results_dict)
     return render_template('user.html', questions = all_questions, navbar_title = "Questions")
+
+@main_routes.route('/del_question/<int:question_id>')
+def del_question(question_id):
+    question = Question.query.get_or_404(question_id)
+    db.session.delete(question)
+    db.session.commit()
+    
+    return redirect(url_for('main_routes.admin'))

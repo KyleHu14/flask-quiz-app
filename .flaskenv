@@ -1,1 +1,2 @@
 FLASK_APP=flask_quiz_app
+FLASK_ENV=development

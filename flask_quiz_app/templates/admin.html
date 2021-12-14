@@ -17,6 +17,17 @@
             </p>
         {% endfor %}
     </div>
-    
 </form>
+
+{% for question in questions %}
+    <div class = "text-white bg-dark ml-5 mr-5 mb-5"> 
+        <p class = "text-center font-weight-bold" > Question Number {{question.id}} </p>
+        <p class = "text-center" > {{question.question_text}} </p>
+        <p class = "text-center" > {{question.answer_text}} </p>
+        <a href = "{{ url_for('main_routes.del_question', question_id=question.id) }}" class = "btn d-flex justify-content-center">Delete</a>
+    </div>
+{% endfor %}
+
+
+
 {% endblock%}
