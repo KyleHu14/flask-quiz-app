@@ -1,1 +1,1 @@
-FLASK_APP=main.py
+FLASK_APP=flask_quiz_app
