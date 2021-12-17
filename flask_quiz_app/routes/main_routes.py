@@ -8,7 +8,7 @@ main_routes = Blueprint('main_routes', __name__)
 
 @main_routes.route('/')
 def home():
-    return render_template('home.html', navbar_title = 'Home')
+    return render_template('home.html')
 
 @main_routes.route('/question_manager', methods = ['GET', 'POST'])
 def question_manager():
@@ -41,16 +41,20 @@ def question_manager():
 @main_routes.route('/user', methods = ['GET', 'POST'])
 def user():
     all_questions = Question.query.all()
+
     if request.method == 'POST':
         user_correct = 0
-        for index_id in range(1,len(all_questions)+1):
-            user_answer = request.form.get(f'answer{index_id}')
-            if user_answer == Question.query.filter_by(id = index_id).first().answer_text:
+        results_dict = {}
+
+        for question in all_questions:
+            user_answer = request.form.get(f'answer{question.id}')
+            if user_answer == question.answer_text:
                 user_correct += 1
             results_dict = {
                 'num_correct' : user_correct,
-                'percent_score' : float(user_correct/len(all_questions))*100
-            }
+                'percent_score' : f'{float(user_correct/len(all_questions))*100}%'
+            }                
+
         return render_template('user.html', questions = all_questions, navbar_title = "Questions", results = results_dict)
     return render_template('user.html', questions = all_questions, navbar_title = "Questions")
 
@@ -60,4 +64,8 @@ def del_question(question_id):
     db.session.delete(question)
     db.session.commit()
     
-    return redirect(url_for('main_routes.admin'))
+    return redirect(url_for('main_routes.question_manager'))
+
+@main_routes.route('/user_manager')
+def user_manager():
+    return render_template('user_manager.html')
